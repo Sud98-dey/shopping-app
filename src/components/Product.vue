@@ -4,7 +4,7 @@
     <header><h2>Product Details</h2></header>
     </b-container><br>
    <b-container>
-   <img src="../assets/dell_15.jpg" width="400"><br>
+   <img src="../assets/dell_15.jpg" width="inherit"><br>
    <b-row tag="p" style="font-size:2rem;">
     <b-col tag="strong"> Brand:  {{ Product.product_name }} </b-col><hr>
     <b-col tag="p">Category: {{ Product.category}}</b-col><hr>
