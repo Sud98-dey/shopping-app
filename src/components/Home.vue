@@ -3,7 +3,7 @@
     <app-nav></app-nav>
 <b-container class="Cwidth">
  <b-row cols-md="3" no-gutters>
-  <b-card class="width" tag="b-col"
+  <b-card class="width"
       border-variant="light"
       align="center"
       v-for="(p, index) in Products"

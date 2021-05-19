@@ -1,5 +1,5 @@
 /* eslint-disable keyword-spacing */
-<template>
+<template #body>
 <section>
   <app-nav></app-nav>
   <b-container fluid="sm">
@@ -11,6 +11,7 @@
     >
       <b-card-header class="cardHeader-font"> Product Details </b-card-header>
       <b-card-body class="cardBody-font">
+        <!--
         <b-row>
           <b-col> Product_ID </b-col> <b-col> Product_Brand </b-col>
           <b-col> Quantity </b-col><b-col> Price </b-col><b-col> </b-col>
@@ -19,23 +20,23 @@
         <b-row v-for="(item, i) in cart" :key="i">
           <b-col> {{ cart[i].product_id }} </b-col>
           <b-col> {{ cart[i].product_name }} </b-col>
-          <b-col>
-            <b-form-spinbutton
-              id="sb-inline"  min="1"
-              v-model="Qty[i]"  size="sm"
-              :max="cart[i].quantity"  inline
-            >
-            </b-form-spinbutton>
-          </b-col>
-          <b-col> {{ parseInt(cart[i].unit_price) * Qty[i] }} </b-col>
+          <b-col>{{ cart[i].quantity }} </b-col>
+          <b-col> {{ cart[i].product_price * item.quantity }} </b-col>
           <b-col>
             <b-button variant="danger" @click="removeFromCart(i)" size="sm">
                  Remove</b-button>
             </b-col>
           <hr/>
-          </b-row>
-        <b-row>
-          <b-col aria-colspan="3"> Total: </b-col>
+          </b-row>-->
+<b-table striped :items="cart" :fields="fields" responsive >
+  <template #cell(actions)="row">
+    <b-button variant="danger" @click="removeFromCart(row.index)" size="sm">
+      Remove</b-button>
+  </template>
+</b-table>
+
+       <b-row>
+          <b-col aria-colspan="3"> Total Price: </b-col>
           <b-col> {{ total }} </b-col>
         </b-row>
       </b-card-body>
@@ -48,34 +49,33 @@
 </section>
 </template>
 <script>
+import Vue from 'vue'
+import { BSpinner, BTable, TablePlugin } from 'bootstrap-vue'
+Vue.use(TablePlugin)
 export default {
+  components: { 'b-spinner': BSpinner, 'b-table': BTable },
   data () {
-    return { cart: [], Qty: [] }
+    return {
+      cart: [],
+      fields: [
+        { product_id: 'Id' },
+        { key: 'product_name', label: 'Name' },
+        { product_price: 'Price' }, 'quantity', 'Actions']
+    }
   },
-  created () {
+  mounted () {
     this.cart = this.$store.getters.CartData
-    this.addQuantity()
   },
   methods: {
     removeFromCart (index) {
       this.$store.commit('removeFromCart', index)
-    },
-    addQuantity () {
-      for (let i = 0; i <= this.cart.length; i++) { this.Qty[i] = 1 }
     }
   }, // Method Block ends
   computed: {
     total () {
-      if (this.cart.length > 0) {
-        var sum = 0
-        // eslint-disable-next-line space-before-blocks
-        for (const c in this.cart) {
-          sum = sum + c.unit_price
-          console.log(sum)
-        }
-        return sum
-      }
-      return 0
+      let sum = 0
+      this.cart.map(item => { sum += item.product_price })
+      return sum
     }
   }// End of Computed Block
 }

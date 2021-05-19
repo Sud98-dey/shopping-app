@@ -14,7 +14,7 @@
   <b-col md="6">
   <b-card-img
 class="rounded-0 style" alt="Image"
-:src="Product.image"></b-card-img>
+:src=Product.image></b-card-img>
   </b-col>
 <b-col md="6">
 <b-card-body>
@@ -24,16 +24,23 @@ class="rounded-0 style" alt="Image"
 
         <b-card-text tag="p"> Price: Rs.{{ Product.unit_price }} </b-card-text>
         <b-card-text tag="p">
-          <b-input placeholder="Enter the Quantity..."> </b-input>
+        <b-form-input
+        placeholder="Enter the Quantity..."
+        type="number" min=1
+        v-model="quantity"> </b-form-input>
         </b-card-text>
 <br v-for="space in 4" :key="space">
         <b-card-text tag="p">
         <b-row aria-setsize="lg">
-          <b-button to="/cart" variant="primary" aria-setsize="lg" size="lg" @click="addToCart">
-            <b-icon icon="cart" aria-rowspan="2"></b-icon> Add To Cart</b-button>
+          <b-button  variant="primary"
+          aria-setsize="lg" size="lg"
+          @click="addToCart">
+        <b-icon icon="cart" aria-rowspan="2"></b-icon> Add To Cart</b-button>
         </b-row>
         </b-card-text>
-
+    <b-card-text class="style">
+    <b-alert variant="danger" show v-if="!avail">  Enter less quantity.</b-alert>
+    </b-card-text>
         </b-card-body>
         </b-col>
     </b-row>
@@ -45,7 +52,7 @@ class="rounded-0 style" alt="Image"
 import { Service } from '../service.js'
 export default {
   data () {
-    return { Product: null, Id: this.$route.params.id }
+    return { Product: null, Id: this.$route.params.id, quantity: 1, avail: true }
   },
   mounted () {
     this.getProduct()
@@ -62,13 +69,22 @@ export default {
         .catch((error) => console.log(error))
     },
     addToCart () { // Adding items to cart
-      this.$store.dispatch('addToCart', this.Product)
+      if (this.quantity > this.Product.quantity) {
+        this.avail = !this.avail
+      } else {
+        this.$store.dispatch('addToCart', {
+          product_id: this.Product.product_id,
+          product_name: this.Product.product_name,
+          product_price: this.Product.unit_price * this.quantity,
+          quantity: this.quantity
+        }); this.$router.push('/cart')
+      }
     }
   }
 }
 </script>
 <style scoped>
 .style { font-size: 2rem; font: optional; max-width: 500px;}
-p { font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman';
-font-size: 3.4rem;}
+p { font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman';font-size: 3.4rem;}
+
 </style>
