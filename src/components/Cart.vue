@@ -2,7 +2,7 @@
 <template #body>
 <section>
   <app-nav></app-nav>
-  <b-container fluid="sm">
+  <b-container aria-setsize="justify">
     <header><b-button to="/home" variant="primary"> Home </b-button></header>
 
     <b-card
@@ -11,39 +11,25 @@
     >
       <b-card-header class="cardHeader-font"> Product Details </b-card-header>
       <b-card-body class="cardBody-font">
-        <!--
-        <b-row>
-          <b-col> Product_ID </b-col> <b-col> Product_Brand </b-col>
-          <b-col> Quantity </b-col><b-col> Price </b-col><b-col> </b-col>
-        </b-row>
 
-        <b-row v-for="(item, i) in cart" :key="i">
-          <b-col> {{ cart[i].product_id }} </b-col>
-          <b-col> {{ cart[i].product_name }} </b-col>
-          <b-col>{{ cart[i].quantity }} </b-col>
-          <b-col> {{ cart[i].product_price * item.quantity }} </b-col>
-          <b-col>
-            <b-button variant="danger" @click="removeFromCart(i)" size="sm">
-                 Remove</b-button>
-            </b-col>
-          <hr/>
-          </b-row>-->
-<b-table striped :items="cart" :fields="fields" responsive >
-  <template #cell(actions)="row">
-    <b-button variant="danger" @click="removeFromCart(row.index)" size="sm">
-      Remove</b-button>
+        <b-table striped :items="cart" :fields="fields" responsive >
+          <template #cell(actions)="row">
+          <b-button variant="danger" @click="removeFromCart(row.index)" size="sm">
+          Remove</b-button>
   </template>
 </b-table>
 
        <b-row>
-          <b-col aria-colspan="3"> Total Price: </b-col>
-          <b-col> {{ total }} </b-col>
+            <b-col aria-colspan="3"> Total Price: </b-col>
+            <b-col> {{ total }} </b-col>
         </b-row>
       </b-card-body>
-      <b-card-footer> Total Items : {{ cart.length }} </b-card-footer>
+        <b-card-footer> Total Items : {{ cart.length }} </b-card-footer>
     </b-card>
     <p v-else>
-      <b-button><b-spinner variant="primary"> </b-spinner> Loading...</b-button>
+      <b-button>
+        <b-spinner variant="primary"> </b-spinner> Loading...
+      </b-button>
     </p>
   </b-container>
 </section>
@@ -57,7 +43,7 @@ export default {
   data () {
     return {
       cart: [],
-      fields: [
+      fields: [// Fields to be mentioned in table
         { product_id: 'Id' },
         { key: 'product_name', label: 'Name' },
         { product_price: 'Price' }, 'quantity', 'Actions']
@@ -67,12 +53,12 @@ export default {
     this.cart = this.$store.getters.CartData
   },
   methods: {
-    removeFromCart (index) {
+    removeFromCart (index) { // Removing item from cart
       this.$store.commit('removeFromCart', index)
     }
   }, // Method Block ends
   computed: {
-    total () {
+    total () { // Calculating total price of items in cart
       let sum = 0
       this.cart.map(item => { sum += item.product_price })
       return sum

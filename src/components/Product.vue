@@ -10,37 +10,43 @@
 <b-container>
 
     <b-card  no-body class="overflow-hidden">
-<b-row no-gutters>
+      <b-row no-gutters>
+      <b-col md="6">
+      <b-card-img
+        class="rounded-0 style" alt="Image"
+        :src=Product.image></b-card-img>
+      </b-col>
   <b-col md="6">
-  <b-card-img
-class="rounded-0 style" alt="Image"
-:src=Product.image></b-card-img>
-  </b-col>
-<b-col md="6">
-<b-card-body>
-        <b-card-text tag="p"> Brand: {{ Product.product_name }} </b-card-text>
+  <b-card-body>
+          <b-card-text tag="p"> Brand: {{ Product.product_name }} </b-card-text>
 
-        <b-card-text tag="p">Category: {{ Product.category }}</b-card-text>
+          <b-card-text tag="p">Category: {{ Product.category }}</b-card-text>
 
-        <b-card-text tag="p"> Price: Rs.{{ Product.unit_price }} </b-card-text>
-        <b-card-text tag="p">
-        <b-form-input
-        placeholder="Enter the Quantity..."
-        type="number" min=1
-        v-model="quantity"> </b-form-input>
-        </b-card-text>
+          <b-card-text tag="p"> Price: Rs.{{ Product.unit_price }} </b-card-text>
+          <b-card-text tag="p">
+            <b-row  aria-rowspan="3">
+            <b-col>
+              <label> Quantity: </label>
+            </b-col>
+          <b-col>
+            <b-form-input
+          type="number" min=1 class="input"
+          v-model="quantity"> </b-form-input>
+          </b-col>
+          </b-row>
+          </b-card-text>
 <br v-for="space in 4" :key="space">
         <b-card-text tag="p">
-        <b-row aria-setsize="lg">
-          <b-button  variant="primary"
-          aria-setsize="lg" size="lg"
-          @click="addToCart">
-        <b-icon icon="cart" aria-rowspan="2"></b-icon> Add To Cart</b-button>
+          <b-row aria-setsize="lg">
+            <b-button  variant="primary"
+            aria-setsize="lg" size="lg"
+            @click="addToCart">
+          <b-icon icon="cart" aria-rowspan="2"></b-icon> Add To Cart</b-button>
         </b-row>
-        </b-card-text>
-    <b-card-text class="style">
-    <b-alert variant="danger" show v-if="!avail">  Enter less quantity.</b-alert>
-    </b-card-text>
+      </b-card-text>
+      <b-card-text class="style">
+        <b-alert variant="danger" show v-if="!avail">  Enter less quantity.</b-alert>
+      </b-card-text>
         </b-card-body>
         </b-col>
     </b-row>
@@ -85,6 +91,6 @@ export default {
 </script>
 <style scoped>
 .style { font-size: 2rem; font: optional; max-width: 500px;}
-p { font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman';font-size: 3.4rem;}
-
+p { font-family:Cambria, Cochin, Georgia,'Times New Roman';font-size: 3.4rem;}
+.input { width: 200px; font-size: 3rem; font: optional;}
 </style>
