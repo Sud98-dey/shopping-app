@@ -5,8 +5,8 @@
   <b-card
       border-variant="light"
       align="center" tag="li"
-      v-for="(p, index) in Products"
-        :key="index">
+      v-for="p in Products"
+        :key="p.product_id">
 <b-card-header header-bg-variant="primary" header-text-variant="light">
   {{ p.product_name}} </b-card-header><br>
       <b-card-text>
@@ -36,7 +36,7 @@ export default {
         headers: { 'Access-Control-Allow-Origin': '*' }
       })
         .then((res) => {
-          this.Products = res.data
+          this.Products = res.data.filter((item) => item.category === 'Mobile')
         })
         .catch((error) => console.log(error))
     }

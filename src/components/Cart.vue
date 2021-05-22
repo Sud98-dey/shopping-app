@@ -1,11 +1,8 @@
 /* eslint-disable keyword-spacing */
 <template #body>
 <section>
-  <app-nav></app-nav>
   <b-container aria-setsize="justify">
-    <header><b-button to="/home" variant="primary"> Home </b-button></header>
-
-    <b-card
+  <b-card
       header-tag="h1" footer-tag="footer"
       body-tag="b" v-if="cart.length > 0"
     >
@@ -13,6 +10,13 @@
       <b-card-body class="cardBody-font">
 
         <b-table striped :items="cart" :fields="fields" responsive >
+          <template #cell(quantity)="data">
+            <b-form-spinbutton inline min="1" :max="data.item.maxQty"
+            v-model="data.item.quantity"> </b-form-spinbutton>
+          </template>
+          <template #cell(Price)="data">
+            {{ data.item.product_price * data.item.quantity }}
+          </template>
           <template #cell(actions)="row">
           <b-button variant="danger" @click="removeFromCart(row.index)" size="sm">
           Remove</b-button>
@@ -44,9 +48,8 @@ export default {
     return {
       cart: [],
       fields: [// Fields to be mentioned in table
-        { product_id: 'Id' },
         { key: 'product_name', label: 'Name' },
-        { product_price: 'Price' }, 'quantity', 'Actions']
+        'Price', 'quantity', 'Actions']
     }
   },
   mounted () {
@@ -60,7 +63,7 @@ export default {
   computed: {
     total () { // Calculating total price of items in cart
       let sum = 0
-      this.cart.map(item => { sum += item.product_price })
+      this.cart.map(item => { sum += (item.product_price * item.quantity) })
       return sum
     }
   }// End of Computed Block

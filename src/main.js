@@ -5,7 +5,7 @@ import store from './store'
 import nav from './components/Nav.vue'
 import {
   IconsPlugin, BContainer, BRow, BCol, BCard, BButton, BFormInput,
-  BAlert, BIcon, BNavbar, BNavbarBrand, BNavbarNav, BNavItem,
+  BAlert, BIcon, BNavbar, BNavbarBrand, BNavbarNav, BNavItem, BFormSpinbutton,
   BCardText, BCardImg, BCardHeader, BCardBody, BCardFooter
 } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -21,6 +21,7 @@ Vue.component('b-navbar-nav', BNavbarNav); Vue.component('b-nav-item', BNavItem)
 Vue.component('b-card-header', BCardHeader); Vue.component('b-card-text', BCardText)
 Vue.component('b-card-img', BCardImg); Vue.component('b-card-body', BCardBody)
 Vue.component('b-card-footer', BCardFooter)
+Vue.component('b-form-spinbutton', BFormSpinbutton)
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App), router, store
