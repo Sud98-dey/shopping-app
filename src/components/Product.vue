@@ -22,8 +22,9 @@
               <label> Quantity: </label>
             </b-col>
           <b-col>
-          <b-form-spinbutton
-          id="sb-inline" v-model="quantity" inline></b-form-spinbutton>
+        <b-form-input v-model="quantity" type="number"> </b-form-input>
+          <b-form-spinbutton :max="Product.quantity"
+          id="sb-inline" v-model="quantity" inline ></b-form-spinbutton>
           </b-col>
           </b-row>
           </b-card-text>

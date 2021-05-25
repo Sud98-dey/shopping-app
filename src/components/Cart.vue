@@ -31,19 +31,18 @@
         <b-card-footer> Total Items : {{ cart.length }} </b-card-footer>
     </b-card>
     <p v-else>
-      <b-button>
-        <b-spinner variant="primary"> </b-spinner> Loading...
-      </b-button>
+      No Products Available...
+      <router-link to="/"> Back to Products Page. </router-link>
     </p>
   </b-container>
 </section>
 </template>
 <script>
 import Vue from 'vue'
-import { BSpinner, BTable, TablePlugin } from 'bootstrap-vue'
+import { BTable, TablePlugin } from 'bootstrap-vue'
 Vue.use(TablePlugin)
 export default {
-  components: { 'b-spinner': BSpinner, 'b-table': BTable },
+  components: { 'b-table': BTable },
   data () {
     return {
       cart: [],
