@@ -30,7 +30,7 @@
                   </b-col>
                   <b-col>
                     <b-form-input
-                    v-model.number="Product.quantity">
+                    v-model.number="quantity">
                     </b-form-input>
                   </b-col>
                 </b-row>
@@ -50,7 +50,7 @@
               </b-card-text>
               <b-card-text class="style">
                 <b-alert variant="danger" show v-if="!avail">
-              Enter quantity less than {{ Product.quantity }}.
+              Enter quantity less than {{ Product.maxQty }}.
                 </b-alert>
               </b-card-text>
             </b-card-body>
@@ -65,6 +65,7 @@ export default {
   data () {
     return {
       Product: null,
+      quantity: 0,
       Id: this.$route.params.id,
       avail: true
     }
@@ -77,10 +78,11 @@ export default {
       this.Product = this.$store.getters.CartData.find(
         (item) => this.Id === item.product_id
       )
+      this.quantity = this.Product.quantity
     },
     EditCart () {
       // Adding items to cart
-      if (this.Product.quantity > this.Product.maxQty) {
+      if (this.quantity > this.Product.maxQty) {
         this.avail = !this.avail
       } else {
         this.$store.dispatch('addToCart', {
@@ -88,7 +90,7 @@ export default {
           image: this.Product.image,
           product_name: this.Product.product_name,
           product_price: this.Product.unit_price,
-          quantity: this.Product.quantity,
+          quantity: this.quantity,
           maxQty: this.Product.maxQty
         })
         this.$router.push('/cart')
