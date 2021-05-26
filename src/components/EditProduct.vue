@@ -18,7 +18,7 @@
 
               <b-card-text tag="p">
                 Category: {{ Product.category }}
-                </b-card-text>
+              </b-card-text>
 
               <b-card-text tag="p">
                 Price: Rs.{{ Product.unit_price }}
@@ -29,15 +29,9 @@
                     <label> Quantity: </label>
                   </b-col>
                   <b-col>
-                    <b-form-input v-once
-                    v-model.number="quantity">
+                    <b-form-input
+                    v-model.number="Product.quantity">
                     </b-form-input>
-                    <b-form-spinbutton
-                      :max="Product.quantity"
-                      id="sb-inline"
-                      v-model="quantity"
-                      inline
-                    ></b-form-spinbutton>
                   </b-col>
                 </b-row>
               </b-card-text>
@@ -48,16 +42,15 @@
                     variant="primary"
                     aria-setsize="lg"
                     size="lg"
-                    @click="addToCart"
+                    @click="EditCart"
                   >
-                  <b-icon icon="cart" aria-rowspan="2"></b-icon> Add To
-                  Cart
+                    Edit Product
                   </b-button>
                 </b-row>
               </b-card-text>
               <b-card-text class="style">
                 <b-alert variant="danger" show v-if="!avail">
-                Enter quantity less than {{ Product.quantity }}.
+              Enter quantity less than {{ Product.quantity }}.
                 </b-alert>
               </b-card-text>
             </b-card-body>
@@ -68,13 +61,11 @@
   </div>
 </template>
 <script>
-import { Service } from '../service.js'
 export default {
   data () {
     return {
       Product: null,
       Id: this.$route.params.id,
-      quantity: 1,
       avail: true
     }
   },
@@ -83,19 +74,13 @@ export default {
   },
   methods: {
     getProduct () {
-      // Fetching specific product from dataBase
-      // eslint-disable-next-line no-template-curly-in-string
-      Service.get('products.json', {
-        headers: { 'Access-Control-Allow-Origin': '*' }
-      })
-        .then((res) => {
-          this.Product = res.data.find((item) => this.Id === item.product_id)
-        })
-        .catch((error) => console.log(error))
+      this.Product = this.$store.getters.CartData.find(
+        (item) => this.Id === item.product_id
+      )
     },
-    addToCart () {
+    EditCart () {
       // Adding items to cart
-      if (this.quantity > this.Product.quantity) {
+      if (this.Product.quantity > this.Product.maxQty) {
         this.avail = !this.avail
       } else {
         this.$store.dispatch('addToCart', {
@@ -103,8 +88,8 @@ export default {
           image: this.Product.image,
           product_name: this.Product.product_name,
           product_price: this.Product.unit_price,
-          quantity: this.quantity,
-          maxQty: this.Product.quantity
+          quantity: this.Product.quantity,
+          maxQty: this.Product.maxQty
         })
         this.$router.push('/cart')
       }
